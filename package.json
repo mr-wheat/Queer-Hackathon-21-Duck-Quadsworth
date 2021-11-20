@@ -1,0 +1,22 @@
+{
+  "name": "queer-hackathon-21-duck-quadsworth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mr-wheat/Queer-Hackathon-21-Duck-Quadsworth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mr-wheat/Queer-Hackathon-21-Duck-Quadsworth/issues"
+  },
+  "homepage": "https://github.com/mr-wheat/Queer-Hackathon-21-Duck-Quadsworth#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
