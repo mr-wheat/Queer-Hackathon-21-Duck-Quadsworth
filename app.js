@@ -3,7 +3,7 @@ const db = require('./db');
 const app = express();
 
 app.use(express.json({limit: 100}));
-app.get('/', function(req, res) { res.send("Hello World!"); });
+app.use(express.static('static'));
 app.get('/place/:place', function(req, res) {
 	res.json(db.lookupPlace(req.params.place));
 });

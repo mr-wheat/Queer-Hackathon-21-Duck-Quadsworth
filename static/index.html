@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Test page</title>
+</head>
+<body>
+	<p>Hello World!</p>
+	<script type="application/javascript">
+		(async () =>
+			window.fetch('./key')
+				.then(response => response.text())
+				.then(data => {
+					const key = data.trim();
+					const script = document.body.appendChild(document.createElement('script'));
+					script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=loadedMaps`;
+					script.async = true;
+				}))();
+		function loadedMaps() {
+			document.body.appendChild(document.createElement('p')).innerHTML = "Loaded Google Maps API";
+		}
+	</script>
+</body>
+</html>
