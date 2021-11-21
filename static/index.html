@@ -48,12 +48,13 @@
 				markers.forEach(marker => marker.setMap(null));
 				markers = [];
 				const bounds = new google.maps.LatLngBounds();
+				document.documentElement.style.setProperty("--scoring-visibility", "hidden");
 				results.forEach(place => {
 					const marker = new google.maps.Marker({
 						map: map,
 						position: place.geometry.location
 					});
-					marker.addListener("click", async () => {
+					const select = async () => {
 						const placeId = place.place_id;
 						const loadScores = async () => {
 							const { good, bad } = await window.fetch(`/place/${placeId}`).then(response => response.json())
@@ -74,7 +75,9 @@
 						};
 						document.getElementById("scorer-safe").onclick = makeHandler(true);
 						document.getElementById("scorer-unsafe").onclick = makeHandler(false);
-					});
+					};
+					if(results.length == 1) select();
+					else marker.addListener("click", select);
 					markers.push(marker);
 					bounds.extend(place.geometry.location);
 				});
