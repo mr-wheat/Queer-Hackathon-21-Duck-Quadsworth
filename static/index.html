@@ -21,15 +21,14 @@
 	<button class="scorer" id="scorer-unsafe">Unsafe</button>
 	</div>
 	<script type="application/javascript">
-		(async () =>
-			window.fetch('./key')
-				.then(response => response.text())
-				.then(data => {
-					const key = data.trim();
-					const script = document.body.appendChild(document.createElement('script'));
-					script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&callback=loadedMaps`;
-					script.async = true;
-				}))();
+		window.fetch('./key')
+			.then(response => response.text())
+			.then(data => {
+				const key = data.trim();
+				const script = document.body.appendChild(document.createElement('script'));
+				script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&callback=loadedMaps`;
+				script.async = true;
+			});
 		function loadedMaps() {
 			const map = new google.maps.Map(document.getElementById("map"), {
 				center: {lat: 35.9132, lng: -79.0558},

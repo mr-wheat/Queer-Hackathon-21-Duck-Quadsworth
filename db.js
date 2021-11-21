@@ -24,7 +24,6 @@ async function connect() {
 			return result ? {good: result.ratingGood, bad: result.ratingBad} : {good: 0, bad: 0};
 		},
 		scorePlace: async (placeId, good) => {
-			console.log(`scorePlace(${placeId}, ${good})`);
 			const exists = await collection.findOne({placeId: placeId});
 			if(exists) collection.updateOne({placeId: placeId}, {$inc: good ? {ratingGood: 1} : {ratingBad: 1}})
 			else collection.insertOne({placeId: placeId, ratingGood: good ? 1 : 0, ratingBad: good ? 0 : 1});
