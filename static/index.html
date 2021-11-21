@@ -58,7 +58,7 @@
 						const loadScores = async () => {
 							const { good, bad } = await window.fetch(`/place/${placeId}`).then(response => response.json())
 							document.getElementById("score-safe").innerText = `+${good}`;
-							document.getElementById("score-unsafe").innerText = `+${bad}`;
+							document.getElementById("score-unsafe").innerText = `-${bad}`;
 						};
 						await loadScores();
 						document.documentElement.style.setProperty("--scoring-visibility", "visible");
