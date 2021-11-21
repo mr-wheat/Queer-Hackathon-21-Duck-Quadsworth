@@ -1,15 +1,14 @@
 header {
-    background-color: rgb(216, 119, 184);
+    background-color: mediumpurple;
     margin: 0px;
     border: 0px;
 }
 
 body {
-    background-color: rgb(81, 228, 100);
+    background-color: #ccccff;
 }
 
 h1 {
-    color: rgb(87, 87, 87);
     text-align: center;
 }
 
