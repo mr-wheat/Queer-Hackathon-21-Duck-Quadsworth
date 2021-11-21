@@ -10,7 +10,10 @@
 </head>
 <body>
 	<header><h1>Welcome to Geo Queer!</h1></header>
+	<div>
+	<input id="search-box" type="text" placeholder="Search..." class="controls" />
 	<div id="map"></div>
+	</div>
 	<div class="scoring">
 	<button class="scorer" id="scorer-safe">Safe</button>
 	<span class="score" id="score-safe">+0</span>
@@ -18,20 +21,64 @@
 	<button class="scorer" id="scorer-unsafe">Unsafe</button>
 	</div>
 	<script type="application/javascript">
-		var geoQueer = {};
 		(async () =>
 			window.fetch('./key')
 				.then(response => response.text())
 				.then(data => {
 					const key = data.trim();
 					const script = document.body.appendChild(document.createElement('script'));
-					script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=loadedMaps`;
+					script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&callback=loadedMaps`;
 					script.async = true;
 				}))();
 		function loadedMaps() {
-			geoQueer.map = new google.maps.Map(document.getElementById("map"), {
+			const map = new google.maps.Map(document.getElementById("map"), {
 				center: {lat: 35.9132, lng: -79.0558},
-				zoom: 12
+				zoom: 12,
+				mapTypeControl: false,
+				streetViewControl: false,
+				fullscreenControl: false
+			});
+			const searchBox = new google.maps.places.SearchBox(document.getElementById("search-box"));
+			map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchBox);
+			map.addListener("bounds_changed", () => { searchBox.setBounds(map.getBounds()); });
+			let markers = [];
+			searchBox.addListener("places_changed", () => {
+				const results = searchBox.getPlaces();
+				if(results.length == 0) return;
+				markers.forEach(marker => marker.setMap(null));
+				markers = [];
+				const bounds = new google.maps.LatLngBounds();
+				results.forEach(place => {
+					const marker = new google.maps.Marker({
+						map: map,
+						position: place.geometry.location
+					});
+					marker.addListener("click", async () => {
+						const placeId = place.place_id;
+						const loadScores = async () => {
+							const { good, bad } = await window.fetch(`/place/${placeId}`).then(response => response.json())
+							document.getElementById("score-safe").innerText = `+${good}`;
+							document.getElementById("score-unsafe").innerText = `+${bad}`;
+						};
+						await loadScores();
+						document.documentElement.style.setProperty("--scoring-visibility", "visible");
+						document.documentElement.style.setProperty("--scorer-visibility", "inherit");
+						const makeHandler = good => async () => {
+							document.documentElement.style.setProperty("--scorer-visibility", "hidden");
+							await window.fetch(`/place/${placeId}`, {
+								method: "POST",
+								headers: { "Content-Type": "application/json" },
+								body: JSON.stringify({good: good})
+							});
+							await loadScores();
+						};
+						document.getElementById("scorer-safe").onclick = makeHandler(true);
+						document.getElementById("scorer-unsafe").onclick = makeHandler(false);
+					});
+					markers.push(marker);
+					bounds.extend(place.geometry.location);
+				});
+				map.fitBounds(bounds);
 			});
 		}
 	</script>

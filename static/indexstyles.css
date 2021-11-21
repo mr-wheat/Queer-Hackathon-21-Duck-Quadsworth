@@ -20,6 +20,25 @@ h1 {
     display: block;
     border-style: none;
 }
+#search-box {
+  display: block;
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin: auto;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 200px;
+}
+#search-box label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+#search-box:focus {
+  border-color: #4d90fe;
+}
 
 :root {
 	--scoring-visibility: hidden;
