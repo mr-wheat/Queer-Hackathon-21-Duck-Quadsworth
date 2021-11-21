@@ -2,13 +2,16 @@ const express = require('express');
 const db = require('./db');
 const app = express();
 
+const connecting = db.connect();
 app.use(express.json({limit: 100}));
 app.use(express.static('static'));
-app.get('/place/:place', function(req, res) {
-	res.json(db.lookupPlace(req.params.place));
-});
-app.post('/place/:place', function(req, res) {
-	if(typeof(req.body.good) === 'boolean') db.scorePlace(req.params.place, req.body.good);
-	res.end();
+connecting.then(database => {
+	app.get('/place/:place', async (req, res) => {
+		res.json(await database.lookupPlace(req.params.place));
+	});
+	app.post('/place/:place', async (req, res) => {
+		if(typeof(req.body.good) === 'boolean') await database.scorePlace(req.params.place, req.body.good);
+		res.end();
+	})
+	app.listen(8080, function() { console.log("Listening for connections..."); });
 })
-app.listen(8080, function() { console.log("Listening for connections..."); });

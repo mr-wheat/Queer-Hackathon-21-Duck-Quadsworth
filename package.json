@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mr-wheat/Queer-Hackathon-21-Duck-Quadsworth#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongodb": "^4.2.0"
   }
 }
