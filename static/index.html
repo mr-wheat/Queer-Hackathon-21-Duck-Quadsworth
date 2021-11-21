@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="author" content="duck-quadworths" />
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Test page</title>
+	<meta name="description" content="A Map of LGBTQ+ Friendly Places"/>
+	<title>Geo Queer</title>
+	<link rel="stylesheet" type="text/css" href="indexstyles.css">
 </head>
 <body>
-	<p>Hello World!</p>
+	<header><h1>Welcome to Geo Queer!</h1></header>
+	<div id="map"></div>
 	<script type="application/javascript">
+		var geoQueer = {};
 		(async () =>
 			window.fetch('./key')
 				.then(response => response.text())
@@ -18,8 +23,12 @@
 					script.async = true;
 				}))();
 		function loadedMaps() {
-			document.body.appendChild(document.createElement('p')).innerHTML = "Loaded Google Maps API";
+			geoQueer.map = new google.maps.Map(document.getElementById("map"), {
+				center: {lat: 35.9132, lng: -79.0558},
+				zoom: 12
+			});
 		}
 	</script>
+<footer><img src="images/geo.svg" alt="logo"></footer>
 </body>
 </html>
